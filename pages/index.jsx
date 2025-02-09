@@ -10,7 +10,7 @@ export default function Home() {
 
   const fetchProduct = async () => {
     try {
-      const res = await axios.get(`http://127.0.0.1:8000/item/${code}`);
+      const res = await axios.get(`https://tech0-gen8-step4-pos-app-72.azurewebsites.net/item/${code}`);
       setProduct(res.data);
     } catch (error) {
       alert("商品が見つかりませんでした");
@@ -28,7 +28,7 @@ export default function Home() {
 
   const completePurchase = async () => {
     try {
-      const res = await axios.post("http://127.0.0.1:8000/purchase", cart);
+      const res = await axios.post("https://tech0-gen8-step4-pos-app-72.azurewebsites.net/purchase", cart);
       alert(`購入完了！合計金額: ${res.data.total}円`);
       setCart([]);
       setTotal(0);
