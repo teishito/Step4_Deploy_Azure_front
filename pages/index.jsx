@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import axios from "axios";
 
@@ -66,28 +67,29 @@ export default function POSApp() {
   };
 
   return (
-    <div style={{ maxWidth: "600px", margin: "auto", padding: "20px" }}>
-      <h1 style={{ textAlign: "center", marginBottom: "20px" }}>Web画面POSアプリ</h1>
+    <div style={{ maxWidth: "400px", margin: "auto", padding: "20px" }}>
+      <h1 style={{ textAlign: "center", marginBottom: "20px" }}>POSアプリ</h1>
 
       {/* 商品コード入力 */}
-      <div style={{ marginBottom: "15px" }}>
+      <div style={{ marginBottom: "20px" }}>
         <input
           type="text"
           value={code}
           onChange={(e) => setCode(e.target.value)}
           placeholder="商品コードを入力"
           style={{
-            width: "70%",
+            width: "100%",
             padding: "10px",
             border: "1px solid #ddd",
             borderRadius: "5px",
+            marginBottom: "10px",
           }}
         />
         <button
           onClick={fetchProduct}
           style={{
-            padding: "10px 15px",
-            marginLeft: "10px",
+            width: "100%",
+            padding: "10px",
             backgroundColor: "#007BFF",
             color: "#fff",
             border: "none",
@@ -95,26 +97,33 @@ export default function POSApp() {
             cursor: "pointer",
           }}
         >
-          商品コード 読み込み
+          商品コード読み込み
         </button>
       </div>
 
-      {/* 商品情報表示 */}
+      {/* 商品情報の表示 */}
       {product && (
         <div
           style={{
             padding: "10px",
-            marginBottom: "15px",
             border: "1px solid #ddd",
             borderRadius: "5px",
+            marginBottom: "20px",
           }}
         >
-          <p>名称: {product.name || "該当商品なし"}</p>
-          {product.price && <p>単価: {product.price}円</p>}
+          <p style={{ margin: "0 0 10px" }}>
+            <strong>商品名:</strong> {product.name || "該当商品なし"}
+          </p>
+          {product.price !== null && (
+            <p style={{ margin: "0 0 10px" }}>
+              <strong>価格:</strong> {product.price}円
+            </p>
+          )}
           <button
             onClick={addToCart}
             style={{
-              padding: "8px 15px",
+              width: "100%",
+              padding: "10px",
               backgroundColor: "#28a745",
               color: "#fff",
               border: "none",
@@ -122,14 +131,14 @@ export default function POSApp() {
               cursor: "pointer",
             }}
           >
-            カートに追加
+            追加
           </button>
         </div>
       )}
 
-      {/* 購入リスト */}
-      <h2>購入リスト</h2>
-      <ul style={{ listStyle: "none", padding: 0, marginBottom: "20px" }}>
+      {/* 購入リストの表示 */}
+      <h2 style={{ textAlign: "center" }}>購入リスト</h2>
+      <ul style={{ listStyle: "none", padding: 0 }}>
         {cart.map((item, index) => (
           <li
             key={index}
@@ -140,44 +149,14 @@ export default function POSApp() {
               justifyContent: "space-between",
             }}
           >
-            <span>
-              {item.name} x1
-            </span>
-            <span>
-              {item.price}円{" "}
-              <button
-                onClick={() => removeFromCart(index)}
-                style={{
-                  padding: "5px 10px",
-                  backgroundColor: "#dc3545",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "3px",
-                  cursor: "pointer",
-                }}
-              >
-                削除
-              </button>
-            </span>
+            <span>{item.name}</span>
+            <span>{item.price}円</span>
           </li>
         ))}
       </ul>
-      <p style={{ fontWeight: "bold", fontSize: "16px" }}>合計金額: {total}円</p>
-
-      {/* 購入ボタン */}
-      <button
-        onClick={completePurchase}
-        style={{
-          padding: "10px 20px",
-          backgroundColor: "#007BFF",
-          color: "#fff",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
-      >
-        購入
-      </button>
+      <p style={{ textAlign: "right", fontWeight: "bold", marginTop: "10px" }}>
+        合計金額: {total}円
+      </p>
     </div>
   );
 }
