@@ -43,7 +43,7 @@ export default function POSApp() {
       <h1 style={{ textAlign: "center", marginBottom: "20px" }}>POSアプリ</h1>
 
       {/* 商品コード入力 */}
-      <div style={{ marginBottom: "20px" }}>
+      <div style={{ marginBottom: "20px",textAlign: "center" }}>
         <input
           type="text"
           value={code}
