@@ -2,7 +2,6 @@ import { useState } from "react";
 import axios from "axios";
 
 export default function Home() {
-  return <h1>Welcome to Next.js!</h1>;
   const [code, setCode] = useState("");
   const [product, setProduct] = useState(null);
   const [cart, setCart] = useState([]);
@@ -28,7 +27,7 @@ export default function Home() {
 
   const completePurchase = async () => {
     try {
-      const res = await axios.post("https://tech0-gen8-step4-pos-app-72.azurewebsites.net/purchase", cart);
+      const res = await axios.post("https://tech0-gen8-step4-pos-app-72.azurewebsites.net/purchase", { items: cart });
       alert(`購入完了！合計金額: ${res.data.total}円`);
       setCart([]);
       setTotal(0);
