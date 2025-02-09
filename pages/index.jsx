@@ -102,39 +102,35 @@ export default function POSApp() {
       </div>
 
       {/* 商品情報の表示 */}
-      {product && (
-        <div
+      <div
+        style={{
+          padding: "10px",
+          border: "1px solid #ddd",
+          borderRadius: "5px",
+          marginBottom: "20px",
+        }}
+      >
+        <p style={{ margin: "0 0 10px" }}>
+          <strong>商品名:</strong> {product.name}
+        </p>
+        <p style={{ margin: "0 0 10px" }}>
+          <strong>価格:</strong> {product.price} 円
+        </p>
+        <button
+          onClick={addToCart}
           style={{
+            width: "100%",
             padding: "10px",
-            border: "1px solid #ddd",
+            backgroundColor: "#28a745",
+            color: "#fff",
+            border: "none",
             borderRadius: "5px",
-            marginBottom: "20px",
+            cursor: "pointer",
           }}
         >
-          <p style={{ margin: "0 0 10px" }}>
-            <strong>商品名:</strong> {product.name || "該当商品なし"}
-          </p>
-          {product.price !== null && (
-            <p style={{ margin: "0 0 10px" }}>
-              <strong>価格:</strong> {product.price}円
-            </p>
-          )}
-          <button
-            onClick={addToCart}
-            style={{
-              width: "100%",
-              padding: "10px",
-              backgroundColor: "#28a745",
-              color: "#fff",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
-          >
-            追加
-          </button>
-        </div>
-      )}
+          追加
+        </button>
+      </div>
 
       {/* 購入リストの表示 */}
       <h2 style={{ textAlign: "center" }}>購入リスト</h2>
