@@ -1,10 +1,14 @@
-require('dotenv').config()
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    env: {
-        // Reference a variable that was defined in the .env file and make it available at Build Time
-        API_ENDPOINT: process.env.API_ENDPOINT,
+  output: 'standalone',
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'https://tech0-gen8-step4-pos-app-72.azurewebsites.net/api/:path*', // バックエンドのURL
       },
-}
+    ];
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
