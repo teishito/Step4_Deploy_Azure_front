@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import axios from "axios";
 
 export default function POSApp() {
   const [code, setCode] = useState("");
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState({ name: "---", price: "---" });
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
 
@@ -22,48 +21,21 @@ export default function POSApp() {
       const res = await axios.get(`${BASE_URL}/item/${code}`);
       setProduct(res.data);
     } catch (error) {
-      setProduct({ name: "商品がマスタ未登録です", price: null });
+      setProduct({ name: "商品がマスタ未登録です", price: "---" });
     }
   };
 
   // 購入リストに商品を追加
   const addToCart = () => {
-    if (!product || product.name === "商品がマスタ未登録です") {
+    if (product.name === "---" || product.name === "商品がマスタ未登録です") {
       alert("有効な商品を選択してください");
       return;
     }
 
     setCart([...cart, { ...product }]);
     setTotal(total + product.price);
-    setProduct(null);
+    setProduct({ name: "---", price: "---" });
     setCode("");
-  };
-
-  // カートから商品を削除
-  const removeFromCart = (index) => {
-    const updatedCart = cart.filter((_, i) => i !== index);
-    const removedItem = cart[index];
-    setCart(updatedCart);
-    setTotal(total - removedItem.price);
-  };
-
-  // 購入処理
-  const completePurchase = async () => {
-    if (cart.length === 0) {
-      alert("カートに商品がありません");
-      return;
-    }
-
-    try {
-      const res = await axios.post(`${BASE_URL}/purchase`, { items: cart });
-      alert(`購入完了！合計金額（税込）: ${res.data.total}円`);
-      setCart([]);
-      setTotal(0);
-      setCode("");
-      setProduct(null);
-    } catch (error) {
-      alert("購入処理に失敗しました");
-    }
   };
 
   return (
