@@ -10,6 +10,13 @@ export default function POSApp() {
   // APIベースURL
   const BASE_URL = "https://tech0-gen8-step4-pos-app-72.azurewebsites.net";
 
+  // ダミーデータ
+  const dummyData = [
+    { code: "12345678901", name: "おーいお茶", price: 150 },
+    { code: "23456789012", name: "四ツ谷サイダー", price: 160 },
+    { code: "34567890123", name: "ソフラン", price: 300 },
+  ];
+
   // 商品情報を取得
   const fetchProduct = async () => {
     if (!code) {
@@ -21,7 +28,15 @@ export default function POSApp() {
       const res = await axios.get(`${BASE_URL}/item/${code}`);
       setProduct(res.data);
     } catch (error) {
-      setProduct({ name: "商品がマスタ未登録です", price: "---" });
+      console.error("APIエラー:", error);
+
+      // APIエラー時にダミーデータを使用
+      const dummyProduct = dummyData.find((item) => item.code === code);
+      if (dummyProduct) {
+        setProduct(dummyProduct);
+      } else {
+        setProduct({ name: "商品がマスタ未登録です", price: "---" });
+      }
     }
   };
 
@@ -33,7 +48,7 @@ export default function POSApp() {
     }
 
     setCart([...cart, { ...product }]);
-    setTotal(total + product.price);
+    setTotal(total + (product.price !== "---" ? product.price : 0));
     setProduct({ name: "---", price: "---" });
     setCode("");
   };
@@ -43,7 +58,7 @@ export default function POSApp() {
       <h1 style={{ textAlign: "center", marginBottom: "20px" }}>POSアプリ</h1>
 
       {/* 商品コード入力 */}
-      <div style={{ marginBottom: "20px",textAlign: "center" }}>
+      <div style={{ marginBottom: "20px", textAlign: "center" }}>
         <input
           type="text"
           value={code}
@@ -86,7 +101,7 @@ export default function POSApp() {
           <strong>商品名:</strong> {product.name}
         </p>
         <p style={{ margin: "0 0 10px" }}>
-          <strong>価格:</strong> {product.price} 円
+          <strong>価格:</strong> {product.price !== "---" ? `${product.price} 円` : "---"}
         </p>
         <button
           onClick={addToCart}
