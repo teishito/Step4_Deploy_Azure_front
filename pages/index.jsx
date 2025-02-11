@@ -26,7 +26,10 @@ export default function POSApp() {
 
     try {
       const res = await axios.get(`${BASE_URL}/api/products/${code}`);
-      setProduct(res.data);
+      setProduct({
+        name: res.data.NAME,  // APIのレスポンスのキーに合わせる
+        price: res.data.PRICE // APIのレスポンスのキーに合わせる
+      });
     } catch (error) {
       console.error("APIエラー:", error);
 
