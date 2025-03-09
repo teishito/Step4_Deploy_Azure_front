@@ -29,8 +29,9 @@ def generate_sns_campaign_report(product_data):
     # GPT-4 APIを呼び出す
     response = openai.chat.completions.create(
         model="gpt-4o-2024-08-06",  # GPT-4モデルを使用
-        messages=[{"role": "system", "content": "あなたはSNSマーケティングの専門家です。"},
-                  {"role": "user", "content": prompt}]
+        messages=[
+            {"role": "system", "content": "あなたはSNSマーケティングの専門家です。"},
+            {"role": "user", "content": prompt}
         ],
         temperature=0.7,
     )
