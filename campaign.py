@@ -39,13 +39,13 @@ def generate_sns_campaign_report(product_data):
     return response.choices[0].message.content
 
 # 商材データの入力フォーム
-st.sidebar.header("商材情報入力")
-product_name = st.sidebar.text_input("商材名", "")
-industry = st.sidebar.text_input("業界", "")
-target_audience = st.sidebar.text_area("ターゲット顧客", "")
-key_features = st.sidebar.text_area("主要な特徴", "")
+st.header("商材情報入力")
+product_name = st.text_input("商材名", "")
+industry = st.text_input("業界", "")
+target_audience = st.text_area("ターゲット顧客", "")
+key_features = st.text_area("主要な特徴", "")
 
-if st.sidebar.button("キャンペーン設計開始"):
+if st.button("キャンペーン設計開始"):
     if product_name and industry and target_audience and key_features:
         product_data = {
             "商品名": product_name,
