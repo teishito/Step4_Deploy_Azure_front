@@ -4,7 +4,7 @@ import graphviz
 import openai
 import requests
 
-st.title("SNSキャンペーン設計 & 経営分析ツール")
+st.title("経営分析&SNSキャンペーン設計ならRichness")
 
 # OpenAI APIキーを直接設定
 openai.api_key = st.secrets["openai_api_key"]
@@ -38,25 +38,37 @@ def generate_sns_campaign_report(product_data):
   
     return response.choices[0].message.content
 
-uploaded_file = st.file_uploader("商材データをアップロード", type=["csv", "xlsx", "json"])
-if uploaded_file:
-    st.success("データがアップロードされました。")
-    df = pd.read_csv(uploaded_file) if uploaded_file.name.endswith("csv") else pd.read_excel(uploaded_file)
-    st.dataframe(df)
-    
-    st.subheader("SNSキャンペーン設計")
-    campaign_plan = generate_sns_campaign_report(df.to_dict())
-    st.text_area("キャンペーン設計結果", campaign_plan, height=300)
-    
-    st.subheader("プロセスフローの可視化")
-    g = graphviz.Digraph(format='png')
-    g.attr(rankdir='LR')
-    g.node("A", "SNSアカウント登録", style='filled', fillcolor='lightgreen')
-    g.node("B", "投稿 & 分析", style='filled', fillcolor='lightblue')
-    g.node("C", "キャンペーン設計", style='filled', fillcolor='deepskyblue')
-    g.node("D", "エンゲージメント分析", style='filled', fillcolor='gray')
-    g.edge("A", "B")
-    g.edge("B", "C")
-    g.edge("C", "D")
-    g.render(filename='flowchart', directory='/mnt/data', format='png', cleanup=True)
-    st.image('/mnt/data/flowchart.png', caption='SNSキャンペーンフロー', use_column_width=True)
+# 商材データの入力フォーム
+st.sidebar.header("商材情報入力")
+product_name = st.sidebar.text_input("商材名", "")
+industry = st.sidebar.text_input("業界", "")
+target_audience = st.sidebar.text_area("ターゲット顧客", "")
+key_features = st.sidebar.text_area("主要な特徴", "")
+
+if st.sidebar.button("キャンペーン設計開始"):
+    if product_name and industry and target_audience and key_features:
+        product_data = {
+            "商品名": product_name,
+            "業界": industry,
+            "ターゲット顧客": target_audience,
+            "主要な特徴": key_features
+        }
+        
+        st.subheader("SNSキャンペーン設計")
+        campaign_plan = generate_sns_campaign_report(product_data)
+        st.text_area("キャンペーン設計結果", campaign_plan, height=300)
+
+        st.subheader("プロセスフローの可視化")
+        g = graphviz.Digraph(format='png')
+        g.attr(rankdir='LR')
+        g.node("A", "SNSアカウント登録", style='filled', fillcolor='lightgreen')
+        g.node("B", "投稿 & 分析", style='filled', fillcolor='lightblue')
+        g.node("C", "キャンペーン設計", style='filled', fillcolor='deepskyblue')
+        g.node("D", "エンゲージメント分析", style='filled', fillcolor='gray')
+        g.edge("A", "B")
+        g.edge("B", "C")
+        g.edge("C", "D")
+        g.render(filename='flowchart', directory='/mnt/data', format='png', cleanup=True)
+        st.image('/mnt/data/flowchart.png', caption='SNSキャンペーンフロー', use_column_width=True)
+    else:
+        st.error("すべての項目を入力してください。")
